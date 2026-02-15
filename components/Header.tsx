@@ -5,7 +5,7 @@ import { CURRENT_USER } from '../lib/mock-data';
 
 export const Header: React.FC = () => {
     return (
-        <header className="bg-teal-900 text-white px-6 pt-12 pb-6 rounded-b-[2.5rem] shadow-xl relative z-50">
+        <header className="bg-teal-900 text-white px-6 pt-12 pb-6 rounded-b-3xl shadow-xl relative z-50">
             <div className="flex justify-between items-start">
                 {/* User Profile */}
                 <div className="flex items-center gap-3">

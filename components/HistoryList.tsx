@@ -17,15 +17,15 @@ const CATEGORIES = ['הכל', 'תחמושת', 'חט"כים', 'מטפים'] as co
 type Category = typeof CATEGORIES[number];
 
 const categoryIcons: Record<Exclude<Category, 'הכל'>, React.ReactNode> = {
-    'תחמושת': <ICONS.Ammo size={28} />,
-    'חט"כים': <ICONS.Engine size={28} />,
-    'מטפים': <ICONS.FireExtinguisher size={28} />
+    'תחמושת': <ICONS.Ammo size={32} />,
+    'חט"כים': <ICONS.Engine size={32} />,
+    'מטפים': <ICONS.FireExtinguisher size={32} />
 };
 
 const categoryColors: Record<Exclude<Category, 'הכל'>, string> = {
-    'תחמושת': 'bg-orange-100 text-orange-600',
-    'חט"כים': 'bg-blue-100 text-blue-600',
-    'מטפים': 'bg-red-100 text-red-600'
+    'תחמושת': 'bg-amber-500 text-white shadow-lg shadow-amber-500/20',
+    'חט"כים': 'bg-blue-500 text-white shadow-lg shadow-blue-500/20',
+    'מטפים': 'bg-red-500 text-white shadow-lg shadow-red-500/20'
 };
 
 export const HistoryList: React.FC<HistoryListProps> = ({
@@ -71,8 +71,8 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                                 className={cn(
                                     "px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap border-2",
                                     selectedCategory === cat
-                                        ? "bg-teal-600 border-teal-600 text-white shadow-md scale-105"
-                                        : "bg-white border-slate-100 text-slate-600 hover:border-teal-200"
+                                        ? "bg-teal-600/80 border-white/40 text-white shadow-xl scale-105 backdrop-blur-xl"
+                                        : "bg-white/10 border-white/20 text-slate-600 hover:bg-white/20 backdrop-blur-lg"
                                 )}
                             >
                                 {cat}
@@ -91,7 +91,7 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                             onClick={() => navigate(`/vehicle/${item.entityId}`)}
                         >
                             <div className={cn(
-                                "w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all group-hover:scale-110",
+                                "w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all group-hover:scale-110 shadow-lg",
                                 categoryColors[item.category as keyof typeof categoryColors]
                             )}>
                                 {categoryIcons[item.category as keyof typeof categoryIcons]}
@@ -114,7 +114,7 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                         </Card>
                     ))
                 ) : (
-                    <div className="text-center py-12 text-slate-400 bg-white/50 backdrop-blur-sm rounded-3xl border-2 border-dashed border-slate-100 mt-4 transition-all animate-in fade-in zoom-in duration-300">
+                    <div className="text-center py-12 text-slate-400 bg-white/10 backdrop-blur-xl rounded-3xl border-2 border-dashed border-white/20 mt-4 transition-all animate-in fade-in zoom-in duration-300 shadow-inner">
                         <Clock className="mx-auto mb-3 opacity-20" size={48} />
                         <Text variant="body" className="font-medium text-slate-500">אין פעילות בקטגוריה זו</Text>
                         <button

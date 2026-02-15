@@ -57,8 +57,8 @@ const HomePage = () => {
                         onFocus={() => setIsOverlayOpen(true)}
                         placeholder="הכנס מספר צ׳"
                         className={`
-                    w-full h-16 pl-4 pr-14 rounded-2xl border-2 bg-white text-lg font-mono font-medium shadow-sm focus:outline-none focus:border-teal-500 transition-all
-                    ${error ? 'border-red-300 focus:border-red-500 text-red-900' : 'border-slate-100'}
+                    w-full h-16 pl-4 pr-14 rounded-2xl border border-white/40 bg-white/10 backdrop-blur-[20px] text-lg font-mono font-medium shadow-2xl focus:outline-none focus:bg-white/30 focus:border-teal-400 transition-all
+                    ${error ? 'border-red-300 focus:border-red-500 text-red-900 bg-red-50/20' : ''}
                 `}
                     />
                     <div className="absolute top-0 right-0 h-full w-14 flex items-center justify-center text-slate-400">

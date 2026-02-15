@@ -31,7 +31,7 @@ export interface Action {
   id: string;
   label: string;
   icon: keyof typeof ICONS; // Store icon name as string for serializability if needed, mapped below
-  color: 'blue' | 'green' | 'red' | 'orange' | 'purple' | 'slate';
+  color: 'blue' | 'green' | 'red' | 'orange' | 'purple' | 'slate' | 'amber';
   requiredRole?: UserRole[]; // If undefined, available to all
   deepLink?: string; // URL scheme or path
 }
@@ -195,7 +195,7 @@ export const ACTIONS_CATALOG: Action[] = [
     id: 'act_ammo_declare',
     label: 'הצהרת תחמושת',
     icon: 'Ammo',
-    color: 'orange',
+    color: 'amber',
     requiredRole: ['Commander', 'Logistics'],
     deepLink: '/ammo'
   },

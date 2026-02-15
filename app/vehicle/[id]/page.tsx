@@ -24,7 +24,7 @@ const AssetHub = () => {
             id: 'ammo-decl',
             label: 'הצהרת תחמושת',
             icon: 'Ammo',
-            color: 'orange',
+            color: 'amber',
             path: '/ammo',
             comingSoon: false,
             disclaimer: 'רק קצינים רשאים למלא טופס הצהרת תחמושת'
@@ -69,16 +69,17 @@ const AssetHub = () => {
     // Icon Mapper
     const renderIcon = (iconName: IconName) => {
         const LucideComponent = ICONS[iconName];
-        return <LucideComponent size={32} />;
+        return <LucideComponent size={36} />;
     }
 
     const colorMap = {
-        blue: 'bg-blue-50 text-blue-600',
-        green: 'bg-green-50 text-green-600',
-        red: 'bg-red-50 text-red-600',
-        orange: 'bg-orange-50 text-orange-600',
-        purple: 'bg-purple-50 text-purple-600',
-        slate: 'bg-slate-50 text-slate-600',
+        blue: 'bg-blue-500 text-white shadow-lg shadow-blue-500/30',
+        green: 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30',
+        red: 'bg-red-500 text-white shadow-lg shadow-red-500/30',
+        orange: 'bg-orange-500 text-white shadow-lg shadow-orange-500/30',
+        amber: 'bg-amber-500 text-white shadow-lg shadow-amber-500/30',
+        purple: 'bg-purple-500 text-white shadow-lg shadow-purple-500/30',
+        slate: 'bg-slate-500 text-white shadow-lg shadow-slate-500/30',
     }
 
     return (
@@ -129,23 +130,27 @@ const AssetHub = () => {
                                     }
                                 }}
                                 className={`
-                                    bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-start gap-4 text-right hover:shadow-md transition-shadow overflow-hidden relative
-                                    ${action.comingSoon ? 'opacity-70 cursor-not-allowed bg-slate-50' : 'active:bg-slate-50'}
+                                    p-5 rounded-2xl border border-white/40 bg-white/10 backdrop-blur-[20px] shadow-xl flex flex-col items-start gap-4 text-right hover:shadow-2xl transition-all overflow-hidden relative group
+                                    ${action.comingSoon ? 'opacity-60 cursor-not-allowed' : 'active:scale-95 active:bg-white/20'}
                                 `}
                             >
-                                <div className="flex justify-between w-full items-start">
-                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${colorMap[action.color as keyof typeof colorMap]}`}>
+                                {/* Glass Shine & Inner Glow effect */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+                                <div className="absolute inset-0 shadow-[inset_0_0_15px_rgba(255,255,255,0.05)] pointer-events-none" />
+
+                                <div className="flex justify-between w-full items-start relative z-10">
+                                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${colorMap[action.color as keyof typeof colorMap]}`}>
                                         {renderIcon(action.icon as IconName)}
                                     </div>
 
                                     {action.comingSoon && (
-                                        <span className="bg-slate-200 text-slate-500 text-[10px] px-2 py-1 rounded-full font-bold">
+                                        <span className="bg-white/20 backdrop-blur-sm text-slate-500 text-[10px] px-2 py-1 rounded-full font-bold border border-white/20">
                                             בקרוב
                                         </span>
                                     )}
                                 </div>
 
-                                <div className="flex flex-col items-start">
+                                <div className="flex flex-col items-start relative z-10">
                                     <span className={`font-bold text-base leading-tight ${action.comingSoon ? 'text-slate-400' : 'text-slate-700'}`}>
                                         {action.label}
                                     </span>

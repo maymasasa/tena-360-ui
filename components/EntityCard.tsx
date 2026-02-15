@@ -8,8 +8,8 @@ interface EntityCardProps {
 
 export const EntityCard: React.FC<EntityCardProps> = ({ entity }) => {
     return (
-        <Card className="bg-white overflow-hidden shadow-sm border border-slate-100">
-            <div className="p-6 relative bg-gradient-to-br from-teal-50/80 via-white to-white">
+        <Card className="overflow-hidden">
+            <div className="p-6 relative bg-gradient-to-br from-teal-50/30 via-white/20 to-transparent backdrop-blur-sm">
                 <div className="flex justify-between items-center relative z-10">
                     <div>
                         <span className="block text-sm font-bold text-teal-600/80 mb-1 tracking-wide">מספר צ׳</span>
