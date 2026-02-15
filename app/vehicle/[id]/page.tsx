@@ -23,7 +23,7 @@ const AssetHub = () => {
         {
             id: 'ammo-decl',
             label: 'הצהרת תחמושת',
-            icon: 'Shield',
+            icon: 'Ammo',
             color: 'orange',
             path: '/ammo',
             comingSoon: false,
@@ -32,16 +32,16 @@ const AssetHub = () => {
         {
             id: 'hatchim',
             label: 'חט״כים',
-            icon: 'Wrench',
-            color: 'slate',
+            icon: 'Engine',
+            color: 'blue',
             path: '',
             comingSoon: true
         },
         {
             id: 'matafim',
             label: 'מטפים',
-            icon: 'AlertTriangle',
-            color: 'slate',
+            icon: 'FireExtinguisher',
+            color: 'red',
             path: '',
             comingSoon: true
         }
@@ -69,7 +69,7 @@ const AssetHub = () => {
     // Icon Mapper
     const renderIcon = (iconName: IconName) => {
         const LucideComponent = ICONS[iconName];
-        return <LucideComponent size={24} />;
+        return <LucideComponent size={32} />;
     }
 
     const colorMap = {

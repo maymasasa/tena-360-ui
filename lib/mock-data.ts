@@ -1,4 +1,5 @@
-import { LucideIcon, Shield, Wrench, Package, Truck, Zap, Activity, Battery, AlertTriangle, FileText, CheckCircle2, Clock } from 'lucide-react';
+import React from 'react';
+import { LucideIcon, Shield, Wrench, Package, Truck, Zap, Activity, Battery, AlertTriangle, FileText, CheckCircle2, Clock, FireExtinguisher, Layers, Crosshair, Flame, Cylinder, Cpu } from 'lucide-react';
 
 // --- Interfaces ---
 
@@ -42,11 +43,60 @@ export interface HistoryItem {
   action: string;
   timestamp: string;
   status: 'Completed' | 'Pending' | 'Failed';
+  category: 'תחמושת' | 'חט"כים' | 'מטפים';
 }
 
+// --- Custom Icons (Using React.createElement to stay in .ts file) ---
+const AmmoIcon = ({ size = 24, ...props }: any) => (
+  React.createElement('svg', {
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    ...props
+  },
+    // Single large shell/bullet
+    React.createElement('path', { d: "M12 2C10 4 9 8 9 12V20H15V12C15 8 14 4 12 2Z" }),
+    React.createElement('line', { x1: "9", y1: "16", x2: "15", y2: "16" }),
+    React.createElement('line', { x1: "9", y1: "18", x2: "15", y2: "18" })
+  )
+);
+
+const EngineIcon = ({ size = 24, ...props }: any) => (
+  React.createElement('svg', {
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.8",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    ...props
+  },
+    // Top fill cap (reference)
+    React.createElement('path', { d: "M10 4h4v2h-4z" }),
+    // Connection to top
+    React.createElement('path', { d: "M12 6v2" }),
+    // Main block
+    React.createElement('path', { d: "M7 8h10l3 3v7H4v-7l3-3z" }),
+    // Gear in middle (reference detail)
+    React.createElement('circle', { cx: "11", cy: "13", r: "2.5" }),
+    // Small details
+    React.createElement('circle', { cx: "16", cy: "13", r: "1" }),
+    // Side connector
+    React.createElement('path', { d: "M20 12h2v4h-2" }),
+    // Left connector
+    React.createElement('path', { d: "M2 13h2" })
+  )
+);
+
 // --- Icons Mapping ---
-// This allows us to store icon names in data and map them to components
-export const ICONS = {
+export const ICONS: Record<string, any> = {
   Shield,
   Wrench,
   Package,
@@ -57,7 +107,15 @@ export const ICONS = {
   AlertTriangle,
   FileText,
   CheckCircle2,
-  Clock
+  Clock,
+  FireExtinguisher,
+  Layers,
+  Crosshair,
+  Flame,
+  Cylinder,
+  Cpu,
+  Ammo: AmmoIcon,
+  Engine: EngineIcon
 };
 
 export type IconName = keyof typeof ICONS;
@@ -136,15 +194,29 @@ export const ACTIONS_CATALOG: Action[] = [
   {
     id: 'act_ammo_declare',
     label: 'הצהרת תחמושת',
-    icon: 'Shield',
+    icon: 'Ammo',
     color: 'orange',
     requiredRole: ['Commander', 'Logistics'],
     deepLink: '/ammo'
   },
   {
+    id: 'act_htak',
+    label: 'בדיקת חט"כים',
+    icon: 'Engine',
+    color: 'blue',
+    deepLink: '/htak'
+  },
+  {
+    id: 'act_extinguisher',
+    label: 'בדיקת מטפים',
+    icon: 'FireExtinguisher',
+    color: 'red',
+    deepLink: '/extinguisher'
+  },
+  {
     id: 'act_refuel',
     label: 'הזמנת תדלוק',
-    icon: 'Zap',
+    icon: 'Flame',
     color: 'purple',
     deepLink: '/refuel'
   },
@@ -164,33 +236,37 @@ export const USER_HISTORY: HistoryItem[] = [
     id: 'h1',
     entityId: '820011',
     entityName: 'הנמר השחור',
-    action: 'בדיקת תקינות',
+    action: 'הצהרת תחמושת',
     timestamp: 'היום, 09:30',
-    status: 'Completed'
+    status: 'Completed',
+    category: 'תחמושת'
   },
   {
     id: 'h2',
     entityId: '90210',
     entityName: 'זאב בודד',
-    action: 'הזמנת חלפים',
+    action: 'בדיקת חט"כים',
     timestamp: 'אתמול, 16:45',
-    status: 'Pending'
+    status: 'Pending',
+    category: 'חט"כים'
   },
   {
     id: 'h3',
     entityId: '334455',
     entityName: 'רואה נסתר',
-    action: 'דיווח תקלה',
+    action: 'מילוי מטפים',
     timestamp: 'אתמול, 14:20',
-    status: 'Completed'
+    status: 'Completed',
+    category: 'מטפים'
   },
   {
     id: 'h4',
     entityId: '778899',
     entityName: 'מוביל כבד',
-    action: 'בדיקת כשירות',
+    action: 'הצהרת תחמושת',
     timestamp: 'לפני יומיים, 10:00',
-    status: 'Failed'
+    status: 'Failed',
+    category: 'תחמושת'
   },
   {
     id: 'h5',
@@ -198,14 +274,25 @@ export const USER_HISTORY: HistoryItem[] = [
     entityName: 'הנמר השחור',
     action: 'טיפול 1000',
     timestamp: 'לפני שבוע, 08:00',
-    status: 'Completed'
+    status: 'Completed',
+    category: 'תחמושת'
   },
   {
     id: 'h6',
     entityId: '334455',
     entityName: 'רואה נסתר',
-    action: 'החלפת סוללה',
+    action: 'ריענון מטפים',
     timestamp: 'לפני שבועיים, 12:30',
-    status: 'Completed'
+    status: 'Completed',
+    category: 'מטפים'
+  },
+  {
+    id: 'h7',
+    entityId: '90210',
+    entityName: 'זאב בודד',
+    action: 'החלפת חט"כים',
+    timestamp: 'לפני שבועיים, 15:00',
+    status: 'Completed',
+    category: 'חט"כים'
   }
 ];

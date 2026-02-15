@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock } from 'lucide-react';
-import { USER_HISTORY } from '../lib/mock-data';
+import { Clock, Filter } from 'lucide-react';
+import { USER_HISTORY, HistoryItem, ICONS } from '../lib/mock-data';
 import { Card } from './ui/Card';
 import { Text } from './ui/Text';
 import { Button } from './ui/Button';
+import { cn } from '../lib/utils';
 
 interface HistoryListProps {
     vehicleId?: string; // If provided, filter by this vehicle ID
@@ -12,74 +13,118 @@ interface HistoryListProps {
     showHeader?: boolean;
 }
 
+const CATEGORIES = ['הכל', 'תחמושת', 'חט"כים', 'מטפים'] as const;
+type Category = typeof CATEGORIES[number];
+
+const categoryIcons: Record<Exclude<Category, 'הכל'>, React.ReactNode> = {
+    'תחמושת': <ICONS.Ammo size={28} />,
+    'חט"כים': <ICONS.Engine size={28} />,
+    'מטפים': <ICONS.FireExtinguisher size={28} />
+};
+
+const categoryColors: Record<Exclude<Category, 'הכל'>, string> = {
+    'תחמושת': 'bg-orange-100 text-orange-600',
+    'חט"כים': 'bg-blue-100 text-blue-600',
+    'מטפים': 'bg-red-100 text-red-600'
+};
+
 export const HistoryList: React.FC<HistoryListProps> = ({
     vehicleId,
     limit,
     showHeader = true
 }) => {
     const navigate = useNavigate();
+    const [selectedCategory, setSelectedCategory] = useState<Category>('הכל');
 
-    // Filter history based on vehicleId
-    const historyItems = vehicleId
-        ? USER_HISTORY.filter(item => item.entityId === vehicleId)
-        : USER_HISTORY;
+    // Filter history based on vehicleId and selectedCategory
+    const historyItems = USER_HISTORY.filter(item => {
+        const matchesVehicle = vehicleId ? item.entityId === vehicleId : true;
+        const matchesCategory = selectedCategory === 'הכל' ? true : item.category === selectedCategory;
+        return matchesVehicle && matchesCategory;
+    });
 
-    // Sort by some criteria if available? They seem reverse chronological in mock data.
     // We'll limit if requested
     const displayItems = limit ? historyItems.slice(0, limit) : historyItems;
-
-    if (historyItems.length === 0) {
-        return (
-            <div className="text-center py-8 text-slate-400 bg-slate-50 rounded-2xl mt-4">
-                <Clock className="mx-auto mb-2 opacity-50" size={32} />
-                <Text variant="body">לא נמצאה היסטוריית טיפולים</Text>
-            </div>
-        );
-    }
 
     return (
         <div className="w-full">
             {showHeader && (
-                <div className="mb-4 flex justify-between items-end">
-                    <Text variant="h3" className="text-lg">
-                        {'פעילות אחרונה'}
-                    </Text>
-                    {!vehicleId && (
-                        <Button variant="ghost" size="sm" className="text-teal-600">הכל</Button>
-                    )}
+                <div className="mb-4 space-y-4">
+                    <div className="flex justify-between items-end">
+                        <Text variant="h3" className="text-lg">
+                            {'פעילות אחרונה'}
+                        </Text>
+                        {!vehicleId && (
+                            <div className="text-xs text-slate-400 flex items-center gap-1">
+                                <Filter size={12} />
+                                <span>{historyItems.length} פריטים</span>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Category Filter Chips */}
+                    <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar -mx-2 px-2">
+                        {CATEGORIES.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={cn(
+                                    "px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap border-2",
+                                    selectedCategory === cat
+                                        ? "bg-teal-600 border-teal-600 text-white shadow-md scale-105"
+                                        : "bg-white border-slate-100 text-slate-600 hover:border-teal-200"
+                                )}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             )}
 
             <div className="space-y-3">
-                {displayItems.map((item) => (
-                    <Card
-                        key={item.id}
-                        className="p-4 flex items-center gap-4 active:scale-[0.98] transition-transform cursor-pointer hover:shadow-md"
-                        onClick={() => navigate(`/vehicle/${item.entityId}`)}
-                    >
-                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${item.status === 'Completed' ? 'bg-green-100 text-green-600' :
-                            item.status === 'Pending' ? 'bg-orange-100 text-orange-600' :
-                                'bg-red-100 text-red-600'
-                            }`}>
-                            <Clock size={20} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <div className="flex justify-between items-baseline mb-1">
-                                <span className="font-bold text-slate-800 truncate ml-2">{item.action}</span>
-                                <span className="text-xs text-slate-400 font-mono whitespace-nowrap">{item.timestamp}</span>
+                {displayItems.length > 0 ? (
+                    displayItems.map((item) => (
+                        <Card
+                            key={item.id}
+                            className="p-4 flex items-center gap-4 active:scale-[0.98] transition-transform cursor-pointer hover:shadow-md group"
+                            onClick={() => navigate(`/vehicle/${item.entityId}`)}
+                        >
+                            <div className={cn(
+                                "w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all group-hover:scale-110",
+                                categoryColors[item.category as keyof typeof categoryColors]
+                            )}>
+                                {categoryIcons[item.category as keyof typeof categoryIcons]}
                             </div>
-                            <div className="text-sm text-slate-500 flex items-center gap-2 truncate">
-                                {!vehicleId && ( // Only show entity name if listing all history
-                                    <>
-                                        <span className="truncate">{item.entityName}</span>
-                                        <span className="w-1 h-1 bg-slate-300 rounded-full flex-shrink-0" />
-                                    </>
-                                )}
-                                <span className="font-mono text-xs">{item.entityId}</span>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex justify-between items-baseline mb-1">
+                                    <span className="font-bold text-slate-800 truncate ml-2">{item.action}</span>
+                                    <span className="text-xs text-slate-400 font-mono whitespace-nowrap">{item.timestamp}</span>
+                                </div>
+                                <div className="text-sm text-slate-500 flex items-center gap-2 truncate">
+                                    {!vehicleId && ( // Only show entity name if listing all history
+                                        <>
+                                            <span className="truncate">{item.entityName}</span>
+                                            <span className="w-1 h-1 bg-slate-300 rounded-full flex-shrink-0" />
+                                        </>
+                                    )}
+                                    <span className="font-mono text-xs">{item.entityId}</span>
+                                </div>
                             </div>
-                        </div>
-                    </Card>
-                ))}
+                        </Card>
+                    ))
+                ) : (
+                    <div className="text-center py-12 text-slate-400 bg-white/50 backdrop-blur-sm rounded-3xl border-2 border-dashed border-slate-100 mt-4 transition-all animate-in fade-in zoom-in duration-300">
+                        <Clock className="mx-auto mb-3 opacity-20" size={48} />
+                        <Text variant="body" className="font-medium text-slate-500">אין פעילות בקטגוריה זו</Text>
+                        <button
+                            onClick={() => setSelectedCategory('הכל')}
+                            className="mt-3 text-teal-600 text-sm font-bold hover:underline"
+                        >
+                            חזור להכל
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

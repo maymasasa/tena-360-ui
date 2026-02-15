@@ -39,11 +39,11 @@ const Loading = ({ onComplete }: { onComplete: () => void }) => {
   }, [isFinished, onComplete]);
 
   return (
-    <div className="fixed inset-0 bg-[#020617] z-50 flex flex-col items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 bg-teal-900 z-50 flex flex-col items-center justify-center overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-teal-500/10 blur-[120px] rounded-full" />
-        <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-teal-500/30 blur-[120px] rounded-full" />
+        <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-white/5 blur-[120px] rounded-full" />
       </div>
 
       <div className="relative z-10 text-center">
@@ -60,7 +60,7 @@ const Loading = ({ onComplete }: { onComplete: () => void }) => {
                 animate={{ opacity: 1, scale: 1, width: "auto" }}
                 exit={{ opacity: 0, scale: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="text-teal-400"
+                className="text-teal-500"
               >
                 H
               </motion.span>
@@ -81,7 +81,7 @@ const Loading = ({ onComplete }: { onComplete: () => void }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="text-teal-400/80 text-lg font-medium tracking-[0.2em] uppercase"
+              className="text-teal-500/80 text-lg font-medium tracking-[0.2em] uppercase"
             >
               {words[wordIndex]}
             </motion.p>
@@ -91,7 +91,7 @@ const Loading = ({ onComplete }: { onComplete: () => void }) => {
         {/* Loading Bar (Subtle) */}
         <div className="mt-12 w-48 h-[2px] bg-white/5 mx-auto rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-teal-400"
+            className="h-full bg-teal-500"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
             transition={{ duration: 3.6, ease: "linear" }}
