@@ -47,26 +47,28 @@ const App = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     return (
-        <>
-            <Layout>
-                <AnimatePresence>
-                    {isLoading && (
-                        <motion.div
-                            key="loading"
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="fixed inset-0 z-[100]"
-                        >
-                            <Loading onComplete={() => setIsLoading(false)} />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+        <div className="min-h-screen bg-[#020617]">
+            <AnimatePresence>
+                {isLoading && (
+                    <motion.div
+                        key="loading"
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="fixed inset-0 z-[100]"
+                    >
+                        <Loading onComplete={() => setIsLoading(false)} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-                <HashRouter>
-                    <AnimatedRoutes />
-                </HashRouter>
-            </Layout>
-        </>
+            {!isLoading && (
+                <Layout>
+                    <HashRouter>
+                        <AnimatedRoutes />
+                    </HashRouter>
+                </Layout>
+            )}
+        </div>
     );
 };
 
