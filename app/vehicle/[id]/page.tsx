@@ -103,9 +103,14 @@ const AssetHub = () => {
                 <span className="text-sm font-medium">חזרה לחיפוש</span>
             </button>
 
-            {/* Entity Card */}
+            {/* Entity Card Skeleton */}
             {loading ? (
-                <div className="w-full h-64 bg-white rounded-3xl animate-pulse shadow-sm" />
+                <div className="w-full h-[156px] rounded-3xl border border-white/40 bg-white/10 backdrop-blur-md animate-pulse p-6 flex items-center shadow-lg">
+                    <div className="space-y-2">
+                        <div className="h-4 w-12 bg-teal-500/20 rounded" />
+                        <div className="h-12 w-40 bg-slate-200/50 rounded-lg" />
+                    </div>
+                </div>
             ) : (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -116,13 +121,18 @@ const AssetHub = () => {
                 </motion.div>
             )}
 
-            {/* Actions Grid */}
+            {/* Actions Grid Skeleton */}
             <div className="mt-8">
                 <Text variant="h3" className="text-lg mb-4 text-slate-700">פעולות זמינות</Text>
 
                 {loading ? (
                     <div className="grid grid-cols-2 gap-4">
-                        {[1, 2, 3].map(i => <div key={i} className="h-32 bg-slate-100/50 rounded-2xl animate-pulse" />)}
+                        {[1, 2, 3, 4].map(i => (
+                            <div key={i} className="h-36 rounded-2xl border border-white/20 bg-white/5 backdrop-blur-sm animate-pulse p-5 space-y-4">
+                                <div className="w-14 h-14 rounded-xl bg-slate-200/30" />
+                                <div className="h-4 w-2/3 bg-slate-200/30 rounded" />
+                            </div>
+                        ))}
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 gap-4">
@@ -136,7 +146,10 @@ const AssetHub = () => {
                                 disabled={action.comingSoon}
                                 onClick={() => {
                                     if (!action.comingSoon && action.path) {
-                                        navigate(action.path);
+                                        const finalPath = action.id === 'ammo-decl' && id
+                                            ? `${action.path}?v=${id}`
+                                            : action.path;
+                                        navigate(finalPath);
                                     }
                                 }}
                                 className={`
@@ -178,13 +191,20 @@ const AssetHub = () => {
                 )}
             </div>
 
-            {/* History Section */}
+            {/* History Section Skeleton */}
             <div className="mt-8">
                 {loading ? (
-                    <div className="space-y-3">
-                        <div className="h-6 w-32 bg-slate-200 rounded animate-pulse mb-4" />
-                        <div className="h-20 bg-slate-100 rounded-2xl animate-pulse" />
-                        <div className="h-20 bg-slate-100 rounded-2xl animate-pulse" />
+                    <div className="space-y-4">
+                        <div className="h-6 w-32 bg-slate-200/50 rounded animate-pulse" />
+                        {[1, 2].map(i => (
+                            <div key={i} className="h-24 w-full rounded-3xl border border-white/20 bg-white/5 backdrop-blur-sm animate-pulse p-4 flex gap-4">
+                                <div className="w-14 h-14 rounded-2xl bg-slate-200/30 flex-shrink-0" />
+                                <div className="flex-1 space-y-2 py-2">
+                                    <div className="h-4 w-1/2 bg-slate-200/30 rounded" />
+                                    <div className="h-3 w-1/3 bg-slate-200/20 rounded" />
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 ) : (
                     <HistoryList vehicleId={displayVehicle?.id} showHeader={true} />

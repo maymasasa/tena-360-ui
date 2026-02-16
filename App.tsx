@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Loading from './app/loading';
 import HomePage from './app/page';
 import AssetHub from './app/vehicle/[id]/page';
+import AmmoDeclaration from './app/ammo/page';
 
 // Moved PageTransition definition up to resolve usage before declaration errors
 // Using React.PropsWithChildren to ensure children prop is correctly typed and optional to satisfy TS in all contexts
@@ -24,22 +25,31 @@ const PageTransition: React.FC<React.PropsWithChildren<{}>> = ({ children }) => 
 // Wrapper to handle route transitions if needed
 const AnimatedRoutes = () => {
     const location = useLocation();
+    const isAmmoPage = location.pathname === '/ammo';
+
     return (
-        <AnimatePresence mode="wait">
-            {/* @ts-ignore */}
-            <Routes location={location} key={location.pathname}>
-                <Route path="/" element={
-                    <PageTransition>
-                        <HomePage />
-                    </PageTransition>
-                } />
-                <Route path="/vehicle/:id" element={
-                    <PageTransition>
-                        <AssetHub />
-                    </PageTransition>
-                } />
-            </Routes>
-        </AnimatePresence>
+        <Layout showGlobalHeader={!isAmmoPage}>
+            <AnimatePresence mode="wait">
+                {/* @ts-ignore */}
+                <Routes location={location} key={location.pathname}>
+                    <Route path="/" element={
+                        <PageTransition>
+                            <HomePage />
+                        </PageTransition>
+                    } />
+                    <Route path="/vehicle/:id" element={
+                        <PageTransition>
+                            <AssetHub />
+                        </PageTransition>
+                    } />
+                    <Route path="/ammo" element={
+                        <PageTransition>
+                            <AmmoDeclaration />
+                        </PageTransition>
+                    } />
+                </Routes>
+            </AnimatePresence>
+        </Layout>
     );
 }
 
@@ -62,11 +72,9 @@ const App = () => {
             </AnimatePresence>
 
             {!isLoading && (
-                <Layout>
-                    <HashRouter>
-                        <AnimatedRoutes />
-                    </HashRouter>
-                </Layout>
+                <HashRouter>
+                    <AnimatedRoutes />
+                </HashRouter>
             )}
         </div>
     );
