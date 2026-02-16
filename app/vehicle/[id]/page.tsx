@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
-import { VEHICLES, ACTIONS_CATALOG, ICONS, IconName, CURRENT_USER } from '../../../lib/mock-data';
+import { VEHICLES, ACTIONS_CATALOG, ICONS, IconName, CURRENT_USER, Entity } from '../../../lib/mock-data';
 import { EntityCard } from '../../../components/EntityCard';
 import { Button } from '../../../components/ui/Button';
 import { Text } from '../../../components/ui/Text';
@@ -17,6 +17,16 @@ const AssetHub = () => {
     const [loading, setLoading] = useState(true);
 
     const vehicle = id ? VEHICLES[id] : null;
+
+    // Simplified fallback for vehicles (only ID matters)
+    const displayVehicle: Entity | null = vehicle || (id ? {
+        id: id,
+        name: id,
+        type: 'Tank',
+        model: '',
+        status: 'Operational',
+        lastUpdated: ''
+    } as Entity : null);
 
     // Specific actions for the vehicle page as requested
     const availableActions = [
@@ -57,10 +67,10 @@ const AssetHub = () => {
         fetchData();
     }, [id]);
 
-    if (!vehicle && !loading) {
+    if (!displayVehicle && !loading) {
         return (
             <div className="min-h-[50vh] flex flex-col items-center justify-center p-6 text-center">
-                <Text variant="h3" className="text-slate-400 mb-4">כלי רכב לא נמצא</Text>
+                <Text variant="h3" className="text-slate-400 mb-4">מספר צ׳ חסר</Text>
                 <Button onClick={() => navigate('/')} variant="outline">חזרה לחיפוש</Button>
             </div>
         )
@@ -102,7 +112,7 @@ const AssetHub = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 >
-                    {vehicle && <EntityCard entity={vehicle} />}
+                    {displayVehicle && <EntityCard entity={displayVehicle} />}
                 </motion.div>
             )}
 
@@ -177,7 +187,7 @@ const AssetHub = () => {
                         <div className="h-20 bg-slate-100 rounded-2xl animate-pulse" />
                     </div>
                 ) : (
-                    <HistoryList vehicleId={vehicle?.id} showHeader={true} />
+                    <HistoryList vehicleId={displayVehicle?.id} showHeader={true} />
                 )}
             </div>
         </div>

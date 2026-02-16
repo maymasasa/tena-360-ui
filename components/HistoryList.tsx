@@ -46,6 +46,9 @@ export const HistoryList: React.FC<HistoryListProps> = ({
     // We'll limit if requested
     const displayItems = limit ? historyItems.slice(0, limit) : historyItems;
 
+    const totalItemsForVehicle = USER_HISTORY.filter(item => vehicleId ? item.entityId === vehicleId : true).length;
+    const isTotallyEmpty = totalItemsForVehicle === 0;
+
     return (
         <div className="w-full">
             {showHeader && (
@@ -64,20 +67,27 @@ export const HistoryList: React.FC<HistoryListProps> = ({
 
                     {/* Category Filter Chips */}
                     <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar -mx-2 px-2">
-                        {CATEGORIES.map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => setSelectedCategory(cat)}
-                                className={cn(
-                                    "px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap border-2",
-                                    selectedCategory === cat
-                                        ? "bg-teal-600/80 border-white/40 text-white shadow-xl scale-105 backdrop-blur-xl"
-                                        : "bg-white/10 border-white/20 text-slate-600 hover:bg-white/20 backdrop-blur-lg"
-                                )}
-                            >
-                                {cat}
-                            </button>
-                        ))}
+                        {CATEGORIES.map((cat) => {
+                            const isSelected = selectedCategory === cat;
+                            const colors = cat === 'הכל'
+                                ? "bg-teal-600/80 border-white/40 shadow-teal-500/20"
+                                : categoryColors[cat].replace('shadow-lg', '');
+
+                            return (
+                                <button
+                                    key={cat}
+                                    onClick={() => setSelectedCategory(cat)}
+                                    className={cn(
+                                        "px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap border-2 shadow-lg",
+                                        isSelected
+                                            ? `${colors} text-white scale-105 backdrop-blur-xl border-white/40`
+                                            : "bg-white/10 border-white/20 text-slate-600 hover:bg-white/20 backdrop-blur-lg"
+                                    )}
+                                >
+                                    {cat}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
             )}
@@ -102,12 +112,6 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                                     <span className="text-xs text-slate-400 font-mono whitespace-nowrap">{item.timestamp}</span>
                                 </div>
                                 <div className="text-sm text-slate-500 flex items-center gap-2 truncate">
-                                    {!vehicleId && ( // Only show entity name if listing all history
-                                        <>
-                                            <span className="truncate">{item.entityName}</span>
-                                            <span className="w-1 h-1 bg-slate-300 rounded-full flex-shrink-0" />
-                                        </>
-                                    )}
                                     <span className="font-mono text-xs">{item.entityId}</span>
                                 </div>
                             </div>
@@ -116,13 +120,20 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                 ) : (
                     <div className="text-center py-12 text-slate-400 bg-white/10 backdrop-blur-xl rounded-3xl border-2 border-dashed border-white/20 mt-4 transition-all animate-in fade-in zoom-in duration-300 shadow-inner">
                         <Clock className="mx-auto mb-3 opacity-20" size={48} />
-                        <Text variant="body" className="font-medium text-slate-500">אין פעילות בקטגוריה זו</Text>
-                        <button
-                            onClick={() => setSelectedCategory('הכל')}
-                            className="mt-3 text-teal-600 text-sm font-bold hover:underline"
-                        >
-                            חזור להכל
-                        </button>
+                        <Text variant="body" className="font-medium text-slate-500">
+                            {isTotallyEmpty
+                                ? (vehicleId ? "אין היסטוריה זמינה לכלי זה" : "עדיין אין פעילות במערכת")
+                                : "אין פעילות בקטגוריה זו"
+                            }
+                        </Text>
+                        {!isTotallyEmpty && (
+                            <button
+                                onClick={() => setSelectedCategory('הכל')}
+                                className="mt-3 text-teal-600 text-sm font-bold hover:underline"
+                            >
+                                חזור להכל
+                            </button>
+                        )}
                     </div>
                 )}
             </div>

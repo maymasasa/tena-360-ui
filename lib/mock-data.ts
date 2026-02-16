@@ -138,7 +138,7 @@ export const VEHICLES: Record<string, Entity> = {
     type: 'Tank',
     model: 'Merkava Mk4',
     status: 'Operational',
-    lastUpdated: '10:42',
+    lastUpdated: 'היום, 10:42',
     fuelLevel: 85,
     batteryLevel: 92,
     location: 'שטח כינוס צפון'
@@ -149,7 +149,7 @@ export const VEHICLES: Record<string, Entity> = {
     type: 'APC',
     model: 'Namer',
     status: 'Maintenance',
-    lastUpdated: '08:15',
+    lastUpdated: 'אתמול, 08:15',
     fuelLevel: 40,
     batteryLevel: 100,
     location: 'סדנא 3'
@@ -160,7 +160,7 @@ export const VEHICLES: Record<string, Entity> = {
     type: 'UAV',
     model: 'Skylark',
     status: 'Critical',
-    lastUpdated: '11:00',
+    lastUpdated: 'היום, 11:00',
     batteryLevel: 15,
     location: 'באוויר'
   },
@@ -170,8 +170,19 @@ export const VEHICLES: Record<string, Entity> = {
     type: 'Truck',
     model: 'Oshkosh',
     status: 'Offline',
-    lastUpdated: 'Yesterday',
+    lastUpdated: 'אתמול, 14:00',
     location: 'חניון לילה'
+  },
+  '556677': {
+    id: '556677',
+    name: 'גמל שלמה',
+    type: 'APC',
+    model: 'Eitan',
+    status: 'Operational',
+    lastUpdated: 'מעולם לא',
+    fuelLevel: 100,
+    batteryLevel: 100,
+    location: 'ימ״ח'
   }
 };
 
@@ -260,6 +271,24 @@ export const USER_HISTORY: HistoryItem[] = [
     category: 'מטפים'
   },
   {
+    id: 'h8',
+    entityId: '820011',
+    entityName: 'הנמר השחור',
+    action: 'בדיקת מטפים תקופתית',
+    timestamp: 'היום, 07:15',
+    status: 'Completed',
+    category: 'מטפים'
+  },
+  {
+    id: 'h9',
+    entityId: '90210',
+    entityName: 'זאב בודד',
+    action: 'ריענון תחמושת בטן',
+    timestamp: 'היום, 06:00',
+    status: 'Completed',
+    category: 'תחמושת'
+  },
+  {
     id: 'h4',
     entityId: '778899',
     entityName: 'מוביל כבד',
@@ -275,7 +304,7 @@ export const USER_HISTORY: HistoryItem[] = [
     action: 'טיפול 1000',
     timestamp: 'לפני שבוע, 08:00',
     status: 'Completed',
-    category: 'תחמושת'
+    category: 'חט"כים'
   },
   {
     id: 'h6',
