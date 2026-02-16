@@ -167,7 +167,7 @@ const AssetHub = () => {
                                     </div>
 
                                     {action.comingSoon && (
-                                        <span className="bg-white/20 backdrop-blur-sm text-slate-500 text-[10px] px-2 py-1 rounded-full font-bold border border-white/20">
+                                        <span className="bg-amber-100/80 text-amber-700 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-amber-200/50 shadow-sm">
                                             בקרוב
                                         </span>
                                     )}
