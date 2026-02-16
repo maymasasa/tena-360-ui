@@ -15,9 +15,8 @@ const HomePage = () => {
     const [isOverlayOpen, setIsOverlayOpen] = useState(false);
     const navigate = useNavigate();
 
-    const handleSearch = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (searchVal.length < 3) return;
+    const performSearch = async (val: string) => {
+        if (val.length < 3) return;
 
         setIsSearching(true);
         setError('');
@@ -25,9 +24,13 @@ const HomePage = () => {
         // Simulate API call
         await sleep(800);
 
-        const vehicle = VEHICLES[searchVal];
         // Allow navigation even if vehicle doesn't exist in mock data to show fallback view
-        navigate(`/vehicle/${searchVal}`);
+        navigate(`/vehicle/${val}`);
+    };
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        performSearch(searchVal);
     };
 
     return (
@@ -46,9 +49,14 @@ const HomePage = () => {
                         inputMode="numeric"
                         pattern="[0-9]*"
                         value={searchVal}
+                        maxLength={6}
                         onChange={(e) => {
-                            setSearchVal(e.target.value);
+                            const val = e.target.value;
+                            setSearchVal(val);
                             if (error) setError('');
+                            if (val.length === 6) {
+                                performSearch(val);
+                            }
                         }}
                         onFocus={() => setIsOverlayOpen(true)}
                         placeholder="הכנס מספר צ׳"
