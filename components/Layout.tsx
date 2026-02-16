@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children, showGlobalHeader = true }) => {
     return (
-        <div className="min-h-screen bg-slate-50 relative max-w-md mx-auto shadow-2xl overflow-hidden min-h-[100dvh] flex flex-col">
+        <div className="min-h-screen bg-slate-200 relative max-w-md mx-auto shadow-2xl overflow-hidden min-h-[100dvh] flex flex-col">
             {/* Background Decorative Elements for Glassmorphism */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
                 <div className="absolute top-[-10%] right-[-15%] w-[100%] h-[50%] bg-teal-500/20 blur-[120px] rounded-full" />
