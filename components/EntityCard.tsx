@@ -1,6 +1,5 @@
 import React from 'react';
 import { Entity } from '../lib/mock-data';
-import { Card } from './ui/Card';
 
 interface EntityCardProps {
     entity: Entity;
@@ -8,18 +7,11 @@ interface EntityCardProps {
 
 export const EntityCard: React.FC<EntityCardProps> = ({ entity }) => {
     return (
-        <Card className="overflow-hidden">
-            <div className="p-6 relative bg-gradient-to-br from-teal-50/30 via-white/20 to-transparent backdrop-blur-sm">
-                <div className="flex items-center relative z-10">
-                    <div>
-                        <span className="block text-sm font-bold text-teal-600/80 mb-1 tracking-wide">מספר צ׳</span>
-                        <h2 className="text-5xl font-black text-slate-900 tracking-tight font-mono leading-none">{entity.id}</h2>
-                    </div>
-                </div>
-
-                {/* Decorative Elements */}
-                <div className="absolute -right-8 -top-8 w-40 h-40 bg-teal-100/40 rounded-full blur-3xl pointer-events-none mix-blend-multiply" />
+        <div className="rounded-lg border border-white bg-gradient-to-b from-white to-slate-50 shadow-sm overflow-hidden relative p-4 py-3">
+            <div className="flex flex-col items-center justify-center text-center">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-0.5">זיהוי מספר צ׳</span>
+                <h2 className="text-4xl font-black text-slate-900 tracking-tighter font-mono leading-none">{entity.id}</h2>
             </div>
-        </Card>
+        </div>
     );
 };

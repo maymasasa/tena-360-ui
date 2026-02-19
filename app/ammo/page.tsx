@@ -29,10 +29,10 @@ const AmmoDeclaration = () => {
             exit={{ opacity: 0, x: -20 }}
             className="flex flex-col items-center text-center space-y-8"
         >
-            <div className="relative">
-                <div className="w-32 h-32 bg-emerald-500/20 rounded-full flex items-center justify-center blur-2xl absolute inset-0" />
-                <div className="w-24 h-24 bg-white/20 backdrop-blur-xl rounded-3xl border border-white/40 flex items-center justify-center relative shadow-xl">
-                    <ClipboardList size={48} className="text-emerald-600" />
+            <div className="relative group">
+                <div className="w-32 h-32 bg-emerald-500/10 rounded-full flex items-center justify-center blur-2xl absolute inset-0 group-hover:bg-emerald-500/20 transition-colors" />
+                <div className="w-24 h-24 bg-gradient-to-b from-white to-slate-50 rounded-[2rem] border border-white flex items-center justify-center relative shadow-xl">
+                    <ClipboardList size={40} className="text-emerald-600" strokeWidth={2.5} />
                 </div>
             </div>
 
@@ -44,7 +44,7 @@ const AmmoDeclaration = () => {
             </div>
 
             <div className="w-full space-y-4 pt-8">
-                <Button onClick={handleNext} className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/30">
+                <Button onClick={handleNext} className="w-full h-14 text-lg font-extrabold bg-gradient-to-b from-blue-500 to-blue-600 border border-blue-400/50 shadow-xl shadow-blue-500/20 rounded-2xl">
                     בואו נתחיל
                 </Button>
                 <button
@@ -67,10 +67,10 @@ const AmmoDeclaration = () => {
             <Text variant="h2" className="text-2xl font-black text-slate-800 text-right">הצהרת תחמושת</Text>
 
             <label className={cn(
-                "p-6 rounded-3xl border-2 transition-all cursor-pointer flex gap-4 items-start",
+                "p-6 rounded-[2rem] border transition-all duration-300 cursor-pointer flex gap-4 items-start select-none",
                 isDeclared
-                    ? "bg-emerald-50/50 border-emerald-500 shadow-lg shadow-emerald-500/10"
-                    : "bg-white/10 border-white/40 border-dashed hover:bg-white/20"
+                    ? "bg-gradient-to-br from-emerald-50 to-white border-emerald-200 shadow-lg shadow-emerald-500/5"
+                    : "bg-gradient-to-b from-white to-slate-50 border-white shadow-md hover:to-slate-100"
             )}>
                 <input
                     type="checkbox"
@@ -90,14 +90,14 @@ const AmmoDeclaration = () => {
             </label>
 
             <div className="space-y-3">
-                <label className="text-slate-600 font-bold text-sm block mr-2">מספר צ׳ <span className="text-red-500">*</span></label>
+                <label className="text-slate-500 font-extrabold text-xs block mr-3 uppercase tracking-widest">מספר צ׳ <span className="text-red-500">*</span></label>
                 <input
                     type="text"
                     inputMode="numeric"
                     placeholder="הזן/י מספר צ׳"
                     value={vehicleId}
                     onChange={(e) => setVehicleId(e.target.value)}
-                    className="w-full h-16 px-6 rounded-2xl border border-white/60 bg-white/20 backdrop-blur-md text-xl font-mono focus:outline-none focus:border-teal-500 focus:bg-white/40 transition-all shadow-inner"
+                    className="w-full h-16 px-6 rounded-2xl border border-white bg-gradient-to-b from-white to-slate-50 text-xl font-mono font-bold focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all shadow-lg"
                 />
             </div>
 
@@ -105,7 +105,7 @@ const AmmoDeclaration = () => {
                 <Button
                     onClick={handleNext}
                     disabled={!isDeclared || vehicleId.length < 3}
-                    className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/30 disabled:opacity-50 disabled:grayscale"
+                    className="w-full h-14 text-lg font-extrabold bg-gradient-to-b from-blue-500 to-blue-600 border border-blue-400/50 shadow-xl shadow-blue-500/20 rounded-2xl disabled:opacity-50 disabled:grayscale"
                 >
                     הבא
                 </Button>
@@ -123,29 +123,31 @@ const AmmoDeclaration = () => {
             <Text variant="h2" className="text-2xl font-black text-slate-800 text-center mb-4">הצהרת תחמושת</Text>
 
             <div className="space-y-6">
-                {/* Personal Info Row */}
-                <div className="flex items-center gap-6 p-4 rounded-3xl bg-white/10 backdrop-blur-md border border-white/40">
-                    <div className="w-20 h-20 rounded-full bg-amber-500/20 flex items-center justify-center overflow-hidden border-4 border-amber-500/20 shadow-xl">
-                        <User size={40} className="text-amber-600" />
+                {/* Personal Info Row - Pillow */}
+                <div className="flex items-center gap-6 p-5 rounded-[2rem] border border-white bg-gradient-to-b from-white to-slate-50 shadow-lg relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/60 to-transparent pointer-events-none" />
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center overflow-hidden shadow-md relative z-10">
+                        <User size={32} className="text-white" strokeWidth={2.5} />
                     </div>
-                    <div className="flex flex-col text-right">
-                        <Text variant="body" className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">פרטים אישיים:</Text>
-                        <Text variant="h4" className="text-slate-800 text-lg font-bold leading-tight">
+                    <div className="flex flex-col text-right relative z-10">
+                        <Text variant="body" className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">ממלא ההצהרה</Text>
+                        <Text variant="h4" className="text-slate-900 text-lg font-black leading-tight">
                             {CURRENT_USER.name}
                         </Text>
-                        <Text variant="body" className="text-slate-600 font-mono text-sm">מ.א: 7286151</Text>
+                        <Text variant="body" className="text-slate-500 font-mono font-bold text-xs uppercase opacity-60 mt-0.5">7286151</Text>
                     </div>
                 </div>
 
-                {/* Request Info Row */}
-                <div className="flex items-center gap-6 p-4 rounded-3xl bg-white/10 backdrop-blur-md border border-white/40">
-                    <div className="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center overflow-hidden border-4 border-emerald-500/20 shadow-xl">
-                        <ClipboardList size={40} className="text-emerald-600" />
+                {/* Request Info Row - Pillow */}
+                <div className="flex items-center gap-6 p-5 rounded-[2rem] border border-white bg-gradient-to-b from-white to-slate-50 shadow-lg relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/60 to-transparent pointer-events-none" />
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center overflow-hidden shadow-md relative z-10">
+                        <ClipboardList size={32} className="text-white" strokeWidth={2.5} />
                     </div>
-                    <div className="flex flex-col text-right">
-                        <Text variant="body" className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">פרטי בקשה:</Text>
-                        <Text variant="h4" className="text-slate-800 text-lg font-bold leading-tight">
-                            מספר צ׳: {vehicleId}
+                    <div className="flex flex-col text-right relative z-10">
+                        <Text variant="body" className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">פרטי הכלי</Text>
+                        <Text variant="h4" className="text-slate-900 text-lg font-black leading-tight">
+                            מספר צ׳ {vehicleId}
                         </Text>
                     </div>
                 </div>
@@ -157,9 +159,9 @@ const AmmoDeclaration = () => {
                         // Normally save logic here
                         navigate('/');
                     }}
-                    className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/30"
+                    className="w-full h-14 text-lg font-extrabold bg-gradient-to-b from-blue-600 to-blue-700 border border-blue-500/50 shadow-xl shadow-blue-500/20 rounded-2xl"
                 >
-                    שמירה
+                    שמירה וחתימה
                 </Button>
                 <button
                     onClick={handleBack}

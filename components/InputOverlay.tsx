@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowLeft, Loader2 } from 'lucide-react';
 import Keypad from './ui/Keypad';
 import { useNavigate } from 'react-router-dom';
-import { sleep } from '../lib/utils'; // Keep if we want a simulated delay, but likely not needed for direct nav
+import { sleep, cn } from '../lib/utils'; // Added cn import
 
 interface InputOverlayProps {
   isOpen: boolean;
@@ -109,14 +109,19 @@ const InputOverlay: React.FC<InputOverlayProps> = ({ isOpen, onClose }) => {
 
             <div className="flex-1 flex flex-col items-center w-full max-w-md mx-auto relative">
 
-              {/* Input Display Area */}
+              {/* Input Display Area - Pillow Effect */}
               <div className="w-full px-8 mb-6 relative z-10">
-                <div className={`
-                    w-full h-24 rounded-2xl shadow-inner border-2 flex items-center justify-center
-                    text-4xl font-mono tracking-[0.2em] transition-all duration-300
-                    border-teal-100 text-teal-900 bg-white
-                `}>
-                  {inputVal || <span className="text-slate-300">______</span>}
+                <div className={cn(
+                  "w-full h-24 rounded-3xl border border-white flex items-center justify-center relative overflow-hidden",
+                  "text-4xl font-mono font-black tracking-[0.2em] transition-all duration-300",
+                  "bg-gradient-to-b from-white to-slate-50 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08),inset_0_2px_4px_rgba(0,0,0,0.02)]",
+                  "text-teal-900"
+                )}>
+                  {/* Subtle Light Effect */}
+                  <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/60 to-transparent pointer-events-none" />
+                  <span className="relative z-10">
+                    {inputVal || <span className="text-slate-200">______</span>}
+                  </span>
                 </div>
               </div>
 
@@ -125,19 +130,19 @@ const InputOverlay: React.FC<InputOverlayProps> = ({ isOpen, onClose }) => {
                 <AnimatePresence>
                   {inputVal.length > 0 && (
                     <motion.button
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.9 }}
                       onClick={handleSubmit}
                       disabled={isSubmitting}
-                      className="w-full h-full bg-teal-600 text-white rounded-xl font-bold text-lg shadow-md flex items-center justify-center gap-2 active:bg-teal-700 transition-colors"
+                      className="w-full h-full bg-gradient-to-b from-teal-500 to-teal-600 border border-teal-400/50 text-white rounded-2xl font-bold text-lg shadow-lg shadow-teal-500/20 flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
                     >
                       {isSubmitting ? (
                         <Loader2 className="animate-spin" />
                       ) : (
                         <>
                           <span>המשך</span>
-                          <ArrowLeft size={20} />
+                          <ArrowLeft size={20} strokeWidth={2.5} />
                         </>
                       )}
                     </motion.button>

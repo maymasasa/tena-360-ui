@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight, ArrowLeft } from 'lucide-react';
+import { ChevronRight, ArrowLeft, ChevronLeft } from 'lucide-react';
 import { VEHICLES, ACTIONS_CATALOG, ICONS, IconName, CURRENT_USER, Entity } from '../../../lib/mock-data';
 import { EntityCard } from '../../../components/EntityCard';
 import { Button } from '../../../components/ui/Button';
 import { Text } from '../../../components/ui/Text';
-import { sleep } from '../../../lib/utils';
+import { sleep, cn } from '../../../lib/utils';
 import { Layout } from '../../../components/Layout'; // Actually Layout is in App, but maybe we need specific header control?
 import { HistoryList } from '../../../components/HistoryList';
 // No, layout is global.
@@ -93,14 +93,14 @@ const AssetHub = () => {
     }
 
     return (
-        <div className="pb-12 pt-6 px-6">
+        <div className="pb-12 pt-2 px-6">
             {/* Breadcrumb / Back */}
             <button
                 onClick={() => navigate('/')}
-                className="flex items-center text-slate-500 mb-6 hover:text-teal-600 transition-colors"
+                className="flex items-center text-slate-400 mb-2 hover:text-teal-600 transition-colors"
             >
-                <ChevronRight size={20} />
-                <span className="text-sm font-medium">חזרה לחיפוש</span>
+                <ChevronRight size={18} />
+                <span className="text-xs font-bold uppercase tracking-wider">חזרה</span>
             </button>
 
             {/* Entity Card Skeleton */}
@@ -122,77 +122,70 @@ const AssetHub = () => {
             )}
 
             {/* Actions Grid Skeleton */}
-            <div className="mt-8">
-                <Text variant="h3" className="text-lg mb-4 text-slate-700">פעולות זמינות</Text>
+            <div className="mt-4">
+                <Text variant="h3" className="text-sm font-bold uppercase tracking-widest mb-3 text-slate-400">פעולות זמינות</Text>
 
                 {loading ? (
-                    <div className="grid grid-cols-2 gap-4">
-                        {[1, 2, 3, 4].map(i => (
-                            <div key={i} className="h-36 rounded-2xl border border-white/20 bg-white/5 backdrop-blur-sm animate-pulse p-5 space-y-4">
-                                <div className="w-14 h-14 rounded-xl bg-slate-200/30" />
-                                <div className="h-4 w-2/3 bg-slate-200/30 rounded" />
-                            </div>
+                    <div className="grid grid-cols-3 gap-2">
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="aspect-square rounded-lg border border-white bg-white/50 animate-pulse shadow-sm" />
                         ))}
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 gap-4">
-                        {availableActions.map((action, index) => (
-                            <motion.button
-                                key={action.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.05 }}
-                                whileTap={!action.comingSoon ? { scale: 0.98 } : {}}
-                                disabled={action.comingSoon}
-                                onClick={() => {
-                                    if (!action.comingSoon && action.path) {
-                                        const finalPath = action.id === 'ammo-decl' && id
-                                            ? `${action.path}?v=${id}`
-                                            : action.path;
-                                        navigate(finalPath);
-                                    }
-                                }}
-                                className={`
-                                    p-5 rounded-2xl border border-white/40 bg-white/10 backdrop-blur-[20px] shadow-xl flex flex-col items-start gap-4 text-right hover:shadow-2xl transition-all overflow-hidden relative group
-                                    ${action.comingSoon ? 'opacity-60 cursor-not-allowed' : 'active:scale-95 active:bg-white/20'}
-                                `}
-                            >
-                                {/* Glass Shine & Inner Glow effect */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
-                                <div className="absolute inset-0 shadow-[inset_0_0_15px_rgba(255,255,255,0.05)] pointer-events-none" />
+                    <div className="grid grid-cols-3 gap-2">
+                        {availableActions.map((action, index) => {
+                            const LucideComponent = ICONS[action.icon as IconName];
+                            return (
+                                <motion.button
+                                    key={action.id}
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: index * 0.05 }}
+                                    disabled={action.comingSoon}
+                                    onClick={() => {
+                                        if (!action.comingSoon && action.path) {
+                                            const finalPath = action.id === 'ammo-decl' && id
+                                                ? `${action.path}?v=${id}`
+                                                : action.path;
+                                            navigate(finalPath);
+                                        }
+                                    }}
+                                    className={`
+                                        aspect-square p-2 rounded-lg border border-white bg-gradient-to-b from-white to-slate-50 relative overflow-hidden group
+                                        shadow-[0_2px_6px_-2px_rgba(0,0,0,0.06),0_1px_3px_-1px_rgba(0,0,0,0.04)]
+                                        flex flex-col items-center justify-center gap-1.5 text-center transition-all duration-300
+                                        ${action.comingSoon ? 'opacity-60 select-none grayscale-[0.2]' : 'active:scale-[0.97] active:shadow-inner hover:shadow-md'}
+                                    `}
+                                >
+                                    {/* Light Highlight Effect */}
+                                    <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/80 to-transparent pointer-events-none" />
 
-                                <div className="flex justify-between w-full items-start relative z-10">
-                                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${colorMap[action.color as keyof typeof colorMap]}`}>
-                                        {renderIcon(action.icon as IconName)}
+                                    <div className={cn(
+                                        "w-9 h-9 rounded-lg flex items-center justify-center shadow-sm relative z-10",
+                                        action.comingSoon ? "bg-slate-300" : colorMap[action.color as keyof typeof colorMap]
+                                    )}>
+                                        {LucideComponent && <LucideComponent size={18} strokeWidth={2.5} className="text-white" />}
                                     </div>
 
-                                    {action.comingSoon && (
-                                        <span className="bg-amber-100/80 text-amber-700 text-[10px] px-2.5 py-0.5 rounded-full font-bold border border-amber-200/50 shadow-sm">
-                                            בקרוב
+                                    <div className="relative z-10 px-1">
+                                        <span className={`font-bold text-[11px] leading-tight block truncate ${action.comingSoon ? 'text-slate-400' : 'text-slate-900'}`}>
+                                            {action.label}
                                         </span>
-                                    )}
-                                </div>
-
-                                <div className="flex flex-col items-start relative z-10">
-                                    <span className={`font-bold text-base leading-tight ${action.comingSoon ? 'text-slate-400' : 'text-slate-700'}`}>
-                                        {action.label}
-                                    </span>
-                                    {/* @ts-ignore */}
-                                    {action.disclaimer && (
-                                        <span className="text-[10px] text-slate-400 mt-1 font-medium leading-tight">
-                                            {/* @ts-ignore */}
-                                            {action.disclaimer}
-                                        </span>
-                                    )}
-                                </div>
-                            </motion.button>
-                        ))}
+                                        {action.comingSoon && (
+                                            <span className="text-[7px] px-1 py-0.5 rounded-md font-black bg-slate-100 text-slate-400 border border-slate-200 uppercase mt-0.5 inline-block">
+                                                בקרוב
+                                            </span>
+                                        )}
+                                    </div>
+                                </motion.button>
+                            );
+                        })}
                     </div>
                 )}
             </div>
 
             {/* History Section Skeleton */}
-            <div className="mt-8">
+            <div className="mt-4">
                 {loading ? (
                     <div className="space-y-4">
                         <div className="h-6 w-32 bg-slate-200/50 rounded animate-pulse" />
