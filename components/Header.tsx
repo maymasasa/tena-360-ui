@@ -1,36 +1,37 @@
 import React from 'react';
-import { Bell, LogOut, Signal, SignalHigh, WifiOff } from 'lucide-react';
-import { Text } from './ui/Text'; // Assuming we might create a Text component, or just use HTML
+import { LogOut } from 'lucide-react';
 import { CURRENT_USER } from '../lib/mock-data';
 
 export const Header: React.FC = () => {
     return (
-        <header className="bg-teal-900 text-white px-6 pt-12 pb-6 rounded-b-3xl shadow-xl relative z-50">
-            <div className="flex justify-between items-start">
-                {/* User Profile */}
-                <div className="flex items-center gap-3">
-                    <div className="relative">
-                        <img
-                            src={CURRENT_USER.avatarUrl}
-                            alt={CURRENT_USER.name}
-                            className="w-12 h-12 rounded-full border-2 border-teal-500/50 object-cover"
-                        />
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-teal-900 rounded-full" />
-                    </div>
-                    <div>
-                        <div className="text-teal-200 text-xs font-light">בוקר טוב,</div>
-                        <div className="text-lg font-bold leading-none">{CURRENT_USER.name}</div>
-                    </div>
-                </div>
+        <header className="bg-teal-900 text-white px-6 pt-10 pb-5 rounded-b-lg shadow-xl relative z-50">
+            <div className="flex justify-between items-center">
 
-                {/* Actions / Status */}
+                {/* Right: User name + Logout (RTL = right side) */}
                 <div className="flex items-center gap-3">
-                    <button aria-label="Logout" className="p-2 bg-teal-800/50 rounded-full text-teal-100 hover:bg-teal-800 transition-colors">
+                    <button aria-label="Logout" className="p-2 bg-teal-800/50 rounded-lg text-teal-100 hover:bg-teal-800 transition-colors">
                         <LogOut size={20} />
                     </button>
-
-
+                    <div>
+                        <div className="text-teal-300 text-xs font-light">בוקר טוב,</div>
+                        <div className="text-lg font-bold leading-tight">{CURRENT_USER.name}</div>
+                    </div>
                 </div>
+
+                {/* Top-left: THENEXT Logo - absolutely pinned */}
+                <div dir="ltr" className="absolute top-3 left-6 flex flex-col items-start">
+                    {/* Logo text */}
+                    <div className="flex items-baseline leading-none">
+                        <span className="text-white font-black text-2xl tracking-tighter">T</span>
+                        <span className="text-teal-400 font-black text-2xl tracking-tighter">H</span>
+                        <span className="text-white font-black text-2xl tracking-tighter">ENEXT</span>
+                    </div>
+                    {/* Subtitle */}
+                    <div className="text-teal-400 text-[7px] font-semibold tracking-[0.12em] uppercase mt-0.5 whitespace-nowrap">
+                        Generation <span className="opacity-50">|</span> Big Thing <span className="opacity-50">|</span> Innovation
+                    </div>
+                </div>
+
             </div>
         </header>
     );

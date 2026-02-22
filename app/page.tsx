@@ -62,7 +62,7 @@ const HomePage = () => {
                         placeholder="הכנס מספר צ׳"
                         className={cn(
                             "w-full h-16 pl-4 pr-14 rounded-lg border border-white text-lg font-mono font-bold transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-teal-500/10",
-                            "bg-gradient-to-b from-white to-slate-50 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.08),0_2_6px_-1px_rgba(0,0,0,0.04)]",
+                            "bg-gradient-to-b from-white to-slate-50 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.08),0_2px_6px_-1px_rgba(0,0,0,0.04)]",
                             error
                                 ? "border-red-300 text-red-900 bg-red-50 focus:ring-red-500/10"
                                 : "text-slate-900 placeholder:text-slate-300"

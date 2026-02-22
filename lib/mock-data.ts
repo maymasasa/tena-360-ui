@@ -66,33 +66,14 @@ const AmmoIcon = ({ size = 24, ...props }: any) => (
   )
 );
 
-const EngineIcon = ({ size = 24, ...props }: any) => (
-  React.createElement('svg', {
+const EngineIcon = ({ size = 24, className }: any) => (
+  React.createElement('img', {
+    src: '/engine-icon.svg',
     width: size,
     height: size,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "1.8",
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    ...props
-  },
-    // Top fill cap (reference)
-    React.createElement('path', { d: "M10 4h4v2h-4z" }),
-    // Connection to top
-    React.createElement('path', { d: "M12 6v2" }),
-    // Main block
-    React.createElement('path', { d: "M7 8h10l3 3v7H4v-7l3-3z" }),
-    // Gear in middle (reference detail)
-    React.createElement('circle', { cx: "11", cy: "13", r: "2.5" }),
-    // Small details
-    React.createElement('circle', { cx: "16", cy: "13", r: "1" }),
-    // Side connector
-    React.createElement('path', { d: "M20 12h2v4h-2" }),
-    // Left connector
-    React.createElement('path', { d: "M2 13h2" })
-  )
+    className: className,
+    style: { filter: 'invert(1)', display: 'block' }
+  })
 );
 
 // --- Icons Mapping ---

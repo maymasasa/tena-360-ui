@@ -151,31 +151,34 @@ const AssetHub = () => {
                                         }
                                     }}
                                     className={`
-                                        aspect-square p-2 rounded-lg border border-white bg-gradient-to-b from-white to-slate-50 relative overflow-hidden group
-                                        shadow-[0_2px_6px_-2px_rgba(0,0,0,0.06),0_1px_3px_-1px_rgba(0,0,0,0.04)]
-                                        flex flex-col items-center justify-center gap-1.5 text-center transition-all duration-300
-                                        ${action.comingSoon ? 'opacity-60 select-none grayscale-[0.2]' : 'active:scale-[0.97] active:shadow-inner hover:shadow-md'}
+                                        aspect-square flex flex-col items-center justify-start gap-2 text-center transition-all duration-300 group
+                                        ${action.comingSoon ? 'opacity-80 select-none' : 'active:scale-90'}
                                     `}
                                 >
-                                    {/* Light Highlight Effect */}
-                                    <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/80 to-transparent pointer-events-none" />
-
+                                    {/* Icon Container - The "App Icon" */}
                                     <div className={cn(
-                                        "w-9 h-9 rounded-lg flex items-center justify-center shadow-sm relative z-10",
-                                        action.comingSoon ? "bg-slate-300" : colorMap[action.color as keyof typeof colorMap]
+                                        "w-16 h-16 rounded-[1.4rem] flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.08)] relative z-10 transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1",
+                                        colorMap[action.color as keyof typeof colorMap]
                                     )}>
-                                        {LucideComponent && <LucideComponent size={18} strokeWidth={2.5} className="text-white" />}
+                                        {/* Subtle Inner Highlight */}
+                                        <div className="absolute inset-0 rounded-[1.4rem] bg-gradient-to-tr from-black/5 to-white/10 pointer-events-none" />
+                                        {LucideComponent && <LucideComponent size={28} strokeWidth={2.2} className="text-white relative z-10" />}
+
+                                        {/* "Coming Soon" Badge - Top Left Floating */}
+                                        {action.comingSoon && (
+                                            <div className="absolute -top-1 -left-1 z-20">
+                                                <span className="text-[8px] px-1.5 py-0.5 rounded-md font-black bg-white text-slate-900 shadow-md border border-slate-100 uppercase">
+                                                    בקרוב
+                                                </span>
+                                            </div>
+                                        )}
                                     </div>
 
-                                    <div className="relative z-10 px-1">
-                                        <span className={`font-bold text-[11px] leading-tight block truncate ${action.comingSoon ? 'text-slate-400' : 'text-slate-900'}`}>
+                                    {/* Label - Centered Below */}
+                                    <div className="relative z-10 px-1 mt-1">
+                                        <span className={`font-black text-[12px] leading-tight block text-slate-700`}>
                                             {action.label}
                                         </span>
-                                        {action.comingSoon && (
-                                            <span className="text-[7px] px-1 py-0.5 rounded-md font-black bg-slate-100 text-slate-400 border border-slate-200 uppercase mt-0.5 inline-block">
-                                                בקרוב
-                                            </span>
-                                        )}
                                     </div>
                                 </motion.button>
                             );
