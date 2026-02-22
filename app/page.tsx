@@ -40,7 +40,7 @@ const HomePage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
             >
-                <Text variant="h2" className="text-teal-900 mb-1 text-xs font-bold uppercase tracking-widest opacity-60">חיפוש כלי</Text>
+                <Text variant="h2" className="text-teal-700 mb-1 text-xs font-bold uppercase tracking-widest">חיפוש כלי</Text>
 
                 {/* Search Bar - Pillow Effect */}
                 <form onSubmit={handleSearch} className="relative mb-4 group">

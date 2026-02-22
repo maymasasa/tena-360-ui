@@ -34,7 +34,7 @@ const AssetHub = () => {
             id: 'ammo-decl',
             label: 'הצהרת תחמושת',
             icon: 'Ammo',
-            color: 'amber',
+            color: 'teal',
             path: '/ammo',
             comingSoon: false,
             disclaimer: 'רק קצינים רשאים למלא טופס הצהרת תחמושת'
@@ -43,7 +43,7 @@ const AssetHub = () => {
             id: 'hatchim',
             label: 'חט״כים',
             icon: 'Engine',
-            color: 'blue',
+            color: 'cyan',
             path: '',
             comingSoon: true
         },
@@ -51,7 +51,7 @@ const AssetHub = () => {
             id: 'matafim',
             label: 'מטפים',
             icon: 'FireExtinguisher',
-            color: 'red',
+            color: 'indigo',
             path: '',
             comingSoon: true
         }
@@ -83,13 +83,14 @@ const AssetHub = () => {
     }
 
     const colorMap = {
-        blue: 'bg-blue-500 text-white shadow-lg shadow-blue-500/30',
-        green: 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30',
-        red: 'bg-red-500 text-white shadow-lg shadow-red-500/30',
-        orange: 'bg-orange-500 text-white shadow-lg shadow-orange-500/30',
-        amber: 'bg-amber-500 text-white shadow-lg shadow-amber-500/30',
-        purple: 'bg-purple-500 text-white shadow-lg shadow-purple-500/30',
-        slate: 'bg-slate-500 text-white shadow-lg shadow-slate-500/30',
+        teal: 'bg-teal-600 text-white shadow-lg shadow-teal-600/25',
+        cyan: 'bg-cyan-600 text-white shadow-lg shadow-cyan-600/25',
+        indigo: 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/25',
+        emerald: 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/25',
+        blue: 'bg-blue-500 text-white shadow-lg shadow-blue-500/25',
+        orange: 'bg-orange-500 text-white shadow-lg shadow-orange-500/25',
+        amber: 'bg-amber-500 text-white shadow-lg shadow-amber-500/25',
+        slate: 'bg-slate-500 text-white shadow-lg shadow-slate-500/25',
     }
 
     return (
@@ -97,7 +98,7 @@ const AssetHub = () => {
             {/* Breadcrumb / Back */}
             <button
                 onClick={() => navigate('/')}
-                className="flex items-center text-slate-400 mb-2 hover:text-teal-600 transition-colors"
+                className="flex items-center text-teal-700 mb-2 hover:text-teal-900 transition-colors font-bold"
             >
                 <ChevronRight size={18} />
                 <span className="text-xs font-bold uppercase tracking-wider">חזרה</span>
@@ -121,9 +122,15 @@ const AssetHub = () => {
                 </motion.div>
             )}
 
-            {/* Actions Grid Skeleton */}
-            <div className="mt-4">
-                <Text variant="h3" className="text-sm font-bold uppercase tracking-widest mb-3 text-slate-400">פעולות זמינות</Text>
+            {/* Divider */}
+            <div className="my-4 flex items-center gap-3">
+                <div className="flex-1 h-px bg-gradient-to-r from-teal-700 to-transparent" />
+                <span className="text-[14px] font-bold uppercase tracking-widest text-teal-700">פעולות זמינות</span>
+                <div className="flex-1 h-px bg-gradient-to-l from-teal-700 to-transparent" />
+            </div>
+
+            {/* Actions Grid */}
+            <div>
 
                 {loading ? (
                     <div className="grid grid-cols-3 gap-2">
@@ -161,7 +168,7 @@ const AssetHub = () => {
                                         colorMap[action.color as keyof typeof colorMap]
                                     )}>
                                         {/* Subtle Inner Highlight */}
-                                        <div className="absolute inset-0 rounded-[1.4rem] bg-gradient-to-tr from-black/5 to-white/10 pointer-events-none" />
+                                        <div className="absolute inset-0 rounded-[1.4rem] bg-gradient-to-tr from-white/30 to-transparent pointer-events-none" />
                                         {LucideComponent && <LucideComponent size={28} strokeWidth={2.2} className="text-white relative z-10" />}
 
                                         {/* "Coming Soon" Badge - Top Left Floating */}
@@ -187,8 +194,15 @@ const AssetHub = () => {
                 )}
             </div>
 
-            {/* History Section Skeleton */}
-            <div className="mt-4">
+            {/* Divider */}
+            <div className="mt-0 mb-0.5 flex items-center gap-3">
+                <div className="flex-1 h-px bg-gradient-to-r from-teal-700 to-transparent" />
+                <span className="text-[14px] font-bold uppercase tracking-widest text-teal-700">פעילות אחרונה</span>
+                <div className="flex-1 h-px bg-gradient-to-l from-teal-700 to-transparent" />
+            </div>
+
+            {/* History Section */}
+            <div>
                 {loading ? (
                     <div className="space-y-4">
                         <div className="h-6 w-32 bg-slate-200/50 rounded animate-pulse" />

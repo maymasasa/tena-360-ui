@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Clock, ChevronLeft } from 'lucide-react';
 import { USER_HISTORY, ICONS } from '../lib/mock-data';
 import { cn } from '../lib/utils';
+import { Text } from './ui/Text';
 
 interface HistoryListProps {
     vehicleId?: string; // If provided, filter by this vehicle ID
@@ -20,11 +21,11 @@ const categoryIcons: Record<Exclude<Category, 'הכל'>, React.ReactNode> = {
     'מטפים': <ICONS.FireExtinguisher size={18} className="text-white" strokeWidth={2.5} />
 };
 
-// iOS System Colors
+// Muted Professional Colors (Matching AssetHub)
 const categoryColors: Record<Exclude<Category, 'הכל'>, { bg: string, strip: string }> = {
-    'תחמושת': { bg: 'bg-[#FF9500]', strip: 'bg-[#FF9500]' }, // iOS Orange
-    'חט"כים': { bg: 'bg-[#007AFF]', strip: 'bg-[#007AFF]' }, // iOS Blue
-    'מטפים': { bg: 'bg-[#FF3B30]', strip: 'bg-[#FF3B30]' }    // iOS Red
+    'תחמושת': { bg: 'bg-teal-600', strip: 'bg-teal-600' },
+    'חט"כים': { bg: 'bg-cyan-600', strip: 'bg-cyan-600' },
+    'מטפים': { bg: 'bg-indigo-600', strip: 'bg-indigo-600' }
 };
 
 export const HistoryList: React.FC<HistoryListProps> = ({
@@ -49,13 +50,6 @@ export const HistoryList: React.FC<HistoryListProps> = ({
         <div className="w-full text-right" dir="rtl">
             {showHeader && (
                 <div className="mb-4 space-y-4 px-1">
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-2 text-slate-500">
-                            <Clock size={16} />
-                            <h2 className="text-sm font-semibold uppercase tracking-wider">פעילות אחרונה</h2>
-                        </div>
-                    </div>
-
                     {/* Filter Chips - Pillow Effect Styling */}
                     <div className="flex gap-2.5 overflow-x-auto pb-2 no-scrollbar px-1">
                         {CATEGORIES.map((cat) => {
@@ -72,7 +66,7 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                                         isSelected
                                             ? cat === 'הכל'
                                                 ? "bg-gradient-to-b from-slate-800 to-slate-900 border-slate-900 text-white shadow-lg shadow-slate-200"
-                                                : `bg-gradient-to-b ${colors.bg.replace('bg-', 'from-').replace('500', '400')} ${colors.bg.replace('bg-', 'to-')} border-transparent text-white shadow-lg shadow-slate-200`
+                                                : `bg-gradient-to-b ${colors.bg.replace('bg-', 'from-').replace('600', '500')} ${colors.bg.replace('bg-', 'to-')} border-transparent text-white shadow-lg shadow-slate-200`
                                             : "bg-gradient-to-b from-white to-slate-50 border-white text-slate-500 hover:text-slate-700 hover:to-slate-100"
                                     )}
                                 >
@@ -105,41 +99,38 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                                             {categoryIcons[item.category as keyof typeof categoryIcons]}
                                         </div>
 
-                                        {/* Action Text & Conditional Entity ID */}
                                         <div className="flex-1 min-w-0">
-                                            <div className="flex items-baseline gap-2 overflow-hidden">
-                                                <span className="font-semibold text-[15px] text-slate-900 truncate shrink-0">
+                                            <div className="flex justify-between items-baseline mb-0.5">
+                                                <h3 className="font-bold text-[15px] text-slate-900 truncate ml-2">
                                                     {item.action}
+                                                </h3>
+                                                <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">
+                                                    {item.timestamp}
                                                 </span>
-                                                {!vehicleId && (
-                                                    <span className="text-[11px] font-mono font-medium text-slate-400 bg-slate-50 px-1 rounded border border-slate-100 truncate">
-                                                        #{item.entityId}
-                                                    </span>
-                                                )}
+                                            </div>
+                                            <div className="flex items-center text-[12px] text-slate-500">
+                                                <span className="truncate">מספר צ׳ {item.entityId} • {item.entityName}</span>
                                             </div>
                                         </div>
 
-                                        {/* Timestamp & Chevron */}
-                                        <div className="flex items-center gap-2 mr-2">
-                                            <span className="text-[13px] text-slate-400 font-normal">
-                                                {item.timestamp}
-                                            </span>
-                                            <ChevronLeft size={16} className="text-slate-300 ml-[-4px]" />
-                                        </div>
+                                        <ChevronLeft size={16} className="text-slate-300 mr-2" />
                                     </div>
 
-                                    {/* iOS Style Separator - Doesn't start from the very right (starts after icon) */}
+                                    {/* Thin Divider */}
                                     {index < displayItems.length - 1 && (
-                                        <div className="mr-14 ml-4 h-[0.5px] bg-slate-100" />
+                                        <div className="mr-16 ml-4 h-px bg-slate-100" />
                                     )}
                                 </div>
                             );
                         })}
                     </div>
                 ) : (
-                    <div className="text-center py-12 px-6">
-                        <Clock className="text-slate-200 mx-auto mb-3" size={40} />
-                        <h3 className="text-slate-400 text-sm font-medium">אין נתונים להצגה</h3>
+                    <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4 transition-transform hover:scale-110">
+                            <Clock size={32} className="text-slate-200" />
+                        </div>
+                        <Text variant="h3" className="text-slate-400 font-bold mb-1">אין פעילות להצגה</Text>
+                        <Text variant="body" className="text-slate-300 text-sm">המתינו לדיווח מהשטח</Text>
                     </div>
                 )}
             </div>
