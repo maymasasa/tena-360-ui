@@ -116,6 +116,11 @@ const HomePage = () => {
                 </form>
 
                 {/* Recent History / Feed */}
+                <div className="mt-8 mb-4 flex items-center gap-3">
+                    <div className="flex-1 h-px bg-gradient-to-r from-teal-700 to-transparent" />
+                    <span className="text-[14px] font-bold uppercase tracking-widest text-teal-700 px-1">פעילות אחרונה</span>
+                    <div className="flex-1 h-px bg-gradient-to-l from-teal-700 to-transparent" />
+                </div>
                 <HistoryList />
 
                 <InputOverlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)} />
